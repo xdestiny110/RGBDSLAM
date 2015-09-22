@@ -1,0 +1,30 @@
+SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+
+INCLUDE_DIRECTORIES(
+	${OpenCV_INCLUDE_DIRS}
+	${PCL_INCLUDE_DIRS}
+	${G2O_INCLUDE_DIR}
+	${G2O_INCLUDE_DIR}/EXTERNAL/csparse
+	${G2O_INCLUDE_DIR}/EXTERNAL/ceres
+	${G2O_INCLUDE_DIR}/EXTERNAL/freeglut
+	${PROJECT_SOURCE_DIR}/CommonHeader
+	${PROJECT_SOURCE_DIR}/Registration
+	${PROJECT_SOURCE_DIR}/KeyFrame
+	${PROJECT_SOURCE_DIR}/LocationLib
+	${PROJECT_SOURCE_DIR}/SiftGPU
+	${PROJECT_SOURCE_DIR}/5Point
+	${PROJECT_SOURCE_DIR}/5Point/include
+	${PROJECT_SOURCE_DIR}/ImageSimilarity
+	${PROJECT_SOURCE_DIR}/GraphEnd)
+	
+LINK_DIRECTORIES(
+	${OpenCV_LIB_DIR}
+	${PCL_LIBRARY_DIRS}
+	${G2O_LIBRARY_DIRS_D}
+	${PROJECT_SOURCE_DIR}/lib)
+
+AUX_SOURCE_DIRECTORY(. Location_SRC)
+ADD_EXECUTABLE(Location ${Location_SRC})
+TARGET_LINK_LIBRARIES(Location ${OpenCV_LIBS} ${PCL_LIBRARIES} ${G2O_LIBS_DEBUG} 
+	SIFTGPU Registration KeyFrame PerceptualHash 5pt GraphEnd LocationLib ImageSimilarity imagelib matrix cminpack f2c clapack cblas)
+add_dependencies(Location LocationLib TEST)
